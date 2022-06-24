@@ -21,27 +21,29 @@ def create_data_lake():
 
 
     """
+    import os
 
+    # se crea una lista por cada carpeta raíz de la estructura
+    data_lake = [
+        "landing",
+        "raw",
+        "cleansed",
+        "business",
+        "business/reports",
+        "business/reports/figures",
+        "business/features",
+        "business/forecasts",
+    ]
 
-    from os import mkdir
-      
-    mkdir("data_lake")
-    mkdir("data_lake/landing")
-    mkdir("data_lake/raw")
-    mkdir("data_lake/cleansed")
-    mkdir("data_lake/business")
-    mkdir("data_lake/business/reports")
-    mkdir("data_lake/business/reports/figures")
-    mkdir("data_lake/business/features")
-    mkdir("data_lake/business/forescasts")
-    
+    # se crea la carpeta data_lake
+    os.mkdir("data_lake")
 
-    #raise NotImplementedError("Implementar esta función")
+    # se crea cada carpeta dentro de data_lake
+    for folder in data_lake:
+        os.mkdir(os.path.join("data_lake", folder))
 
 
 if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-
-    create_data_lake()
