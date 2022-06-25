@@ -11,7 +11,6 @@ En luigi llame las funciones que ya creo.
 
 
 """
-
 import ingest_data
 import transform_data
 import clean_data

@@ -16,7 +16,6 @@ def clean_data():
     import os
     import numpy as np
 
-    # Lista de archivos cvs en la capa raw
     archivosRaw = [
         "data_lake/raw/" + f for f in os.listdir("data_lake/raw") if f.endswith(".csv")
     ]
@@ -65,8 +64,7 @@ def clean_data():
     contenidoCSVMerged = pd.concat(contenidoCSV, ignore_index=True)
     contenidoCSVMerged.to_csv("data_lake/cleansed/precios-horarios.csv", index=False)
 
-
-    if __name__ == "__main__":
-     import doctest
+if __name__ == "__main__":
+    import doctest
 
     doctest.testmod()
