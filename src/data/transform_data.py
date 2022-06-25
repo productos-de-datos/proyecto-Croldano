@@ -6,6 +6,7 @@ def transform_data():
     tiene como columnas la fecha en formato YYYY-MM-DD y las horas H00, ...,
     H23.
 
+ >>> transform_data()
     """
     import pandas as pd
     import os
@@ -14,54 +15,69 @@ def transform_data():
     from datetime import datetime
     from os import remove
 
+
     subprocess.call(["pip", "install", "openpyxl"])
     subprocess.call(["pip", "install", "xlrd"])
 
+ 
     archivosLanding = [
         "data_lake/landing/" + f
         for f in os.listdir("data_lake/landing")
         if f.endswith(".xls") or f.endswith(".xlsx")
     ]
 
+  
     for archivo in archivosLanding:
-
+ 
         df = pd.read_excel(archivo)
 
         if df.columns[0] != "Fecha":
-
+ 
             filaInicianDatos = df[df.iloc[:, 0] == "Fecha"].index[0] + 1
 
+ 
             df = pd.read_excel(archivo, skiprows=filaInicianDatos)
 
+ 
             nombreArchivo = archivo.split("/")[-1]
 
+
             nombreArchivoCSV = nombreArchivo.split(".")[0] + ".csv"
+
 
             df.to_csv("data_lake/raw/" + nombreArchivoCSV, index=False)
         else:
-
+  
             nombreArchivo = archivo.split("/")[-1]
 
+ 
             nombreArchivoCSV = nombreArchivo.split(".")[0] + ".csv"
 
+ 
             df.to_csv("data_lake/raw/" + nombreArchivoCSV, index=False)
 
     archivosRaw = [
         "data_lake/raw/" + f for f in os.listdir("data_lake/raw") if f.endswith(".csv")
     ]
 
+
     for archivo in archivosRaw:
         try:
+   
             data = pd.read_csv(archivo)
 
             data.dropna(subset=["Fecha"], inplace=True)
 
+ 
             data["Fecha"] = pd.to_datetime(data["Fecha"])
 
+   
             data["Fecha"] = data["Fecha"].apply(lambda x: x.strftime("%Y-%m-%d"))
 
+  
             nombreArchivo = archivo.split("/")[-1]
 
+     
             numeroColumnas = len(data.columns)
 
             if numeroColumnas > 25:
@@ -96,8 +112,10 @@ def transform_data():
                 "H23",
             ]
 
+ 
             remove(archivo)
 
+  
             data.to_csv(
                 "data_lake/raw/" + nombreArchivo,
                 sep=",",

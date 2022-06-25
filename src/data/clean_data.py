@@ -10,6 +10,7 @@ def clean_data():
 
     Este archivo contiene toda la información del 1997 a 2021.
 
+    >>> clean_data()
 
     """
     import pandas as pd
@@ -63,6 +64,7 @@ def clean_data():
 
     contenidoCSVMerged = pd.concat(contenidoCSV, ignore_index=True)
     contenidoCSVMerged.to_csv("data_lake/cleansed/precios-horarios.csv", index=False)
+
 
 if __name__ == "__main__":
     import doctest

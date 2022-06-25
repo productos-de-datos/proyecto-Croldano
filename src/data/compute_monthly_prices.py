@@ -9,7 +9,7 @@ def compute_monthly_prices():
 
     * precio: precio promedio mensual de la electricidad en la bolsa nacional
 
-
+    >>> compute_monthly_prices()
 
     """
     import pandas as pd

@@ -9,7 +9,6 @@ Construya un pipeline de Luigi que:
 
 En luigi llame las funciones que ya creo.
 
-
 """
 import ingest_data
 import transform_data
@@ -52,3 +51,4 @@ if __name__ == "__main__":
 
     doctest.testmod()
     luigi.run(["Reportes", "--local-scheduler"])
+
