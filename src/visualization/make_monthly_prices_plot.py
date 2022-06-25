@@ -8,16 +8,13 @@ def make_monthly_prices_plot():
     El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/monthly_prices.png.
     >>> make_monthly_prices_plot()
     """
-
     import pandas as pd
     import os
 
-    # Importar el archivo de precios mensuales
     os.chdir("../")
 
     prices_df = pd.read_csv("src/data_lake/business/precios-mensuales.csv")
 
-    # Crea y Guarda el grafico en formato PNG
     figura = prices_df.plot(
         kind="line",
         x="Fecha",
