@@ -12,68 +12,44 @@ En luigi llame las funciones que ya creo.
 
 """
 
-import luigi
-from clean_data import clean_data
-from luigi import Task, LocalTarget
+import ingest_data
+import transform_data
+import clean_data
 import compute_daily_prices
 import compute_monthly_prices
-import create_data_lake
-import transform_data
-import ingest_data
+import luigi
+from luigi import Task, LocalTarget
 
 
-class CleaningData(Task):
+class ObtenerTransformarLimpiarDatos(Task):
     def output(self):
-        self.relative_path = "\\".join(__file__.split("\\")[:-2])
-        return LocalTarget(
-            self.relative_path + "\\data_lake\\cleansed\\precios-horarios.csv"
-        )
+        return LocalTarget("data_lake/cleansed/precios-horarios.csv")
 
     def run(self):
-        try:
-            create_data_lake.create_data_lake()
-        except Exception as e:
-            print(e, "create_data_lake_error")
-        try:
-            ingest_data.ingest_data()
-        except Exception as e:
-            print(e, "ingest_data_error")
-        try:
-            transform_data.transform_data()
-        except Exception as e:
-            print(e, "transform_data_error")
-        try:
-            df = clean_data()
-            file = open(self.output().path, "wb")
-            df.to_csv(file, index=False)
-
-        except Exception as e:
-            print(e, "clean_data_error")
-
-    # raise NotImplementedError("Implementar esta función")
+        ingest_data.ingest_data()
+        transform_data.transform_data()
+        clean_data.clean_data()
 
 
-class DayFile:
+class Reportes(Task):
     def requires(self):
-        return CleaningData()
+        return ObtenerTransformarLimpiarDatos()
 
     def output(self):
-        self.relative_path = "\\".join(__file__.split("\\")[:-2])
         return LocalTarget(
-            self.relative_path + "\\data_lake\\business\\precios-diarios.csv"
+            [
+                "data_lake/business/precios-diarios.csv",
+                "data_lake/business/precios-mensuales.csv",
+            ]
         )
 
     def run(self):
-        try:
-            df = compute_daily_prices.compute_daily_prices(self.input())
-            file = open(self.input(), "wb")
-            df.to_csv(file, index=False)
-        except Exception as e:
-            print(e, "monthly_report")
+        compute_daily_prices.compute_daily_prices()
+        compute_monthly_prices.compute_monthly_prices()
 
 
 if __name__ == "__main__":
     import doctest
 
-    luigi.run(["CleaningData", "--local-scheduler"])
     doctest.testmod()
+    luigi.run(["Reportes", "--local-scheduler"])
