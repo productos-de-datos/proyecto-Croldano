@@ -10,7 +10,6 @@ def make_daily_prices_plot():
     import pandas as pd
     import os
 
-    # Importar el archivo de precios diarios
     os.chdir(os.getcwd() + "/src/data")
     print(os.getcwd())
  
