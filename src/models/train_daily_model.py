@@ -3,7 +3,7 @@ def train_daily_model():
 
     Con las features entrene el modelo de proóstico de precios diarios y
     salvelo en models/precios-diarios.pkl
-    
+
     """
     import pandas as pd
     from sklearn.linear_model import LinearRegression
@@ -48,4 +48,4 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-    train_daily_model()
+train_daily_model()
