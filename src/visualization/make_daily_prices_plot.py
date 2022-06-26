@@ -7,6 +7,7 @@ def make_daily_prices_plot():
     El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/daily_prices.png.
     
     """
+    import os
     import pandas as pd
     import matplotlib.pyplot as plt
     path_file = r'data_lake/business/precios-diarios.csv'
@@ -15,7 +16,6 @@ def make_daily_prices_plot():
     x = datos.fecha
     y = datos.precio
 
-<<<<<<< HEAD
     plt.figure(figsize=(15, 6))
     plt.plot(x, y, 'b', label='Promedio Diario')
     plt.title('Promedio Diario')
@@ -27,13 +27,11 @@ def make_daily_prices_plot():
 
     # return
     #raise NotImplementedError("Implementar esta función")
-=======
     # Importar el archivo de precios diarios
     os.chdir(os.getcwd() + "/src/data")
     print(os.getcwd())
  
     prices_df = pd.read_csv("data_lake\\business\\precios-diarios.csv")
->>>>>>> parent of b6f2afc (Try n)
 
 
 if __name__ == "__main__":
