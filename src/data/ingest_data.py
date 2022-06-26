@@ -1,61 +1,44 @@
-"""
-Módulo de ingestión de datos.
--------------------------------------------------------------------------------
-"""
-
-from ast import Try
-from distutils.log import Log
-import logging
-from urllib import request
-
-
 def ingest_data():
     """Ingeste los datos externos a la capa landing del data lake.
     
     Del repositorio jdvelasq/datalabs/precio_bolsa_nacional/xls/ descarge los
     archivos de precios de bolsa nacional en formato xls a la capa landing. La
     descarga debe realizarse usando únicamente funciones de Python.
-    >>> ingest_data()
+  
     """
+    import pandas as pd
+    import xlwt
 
-    import urllib.request
-    import datetime
-    import logging
-    from os import remove
+    def descargar_archivo(ruta, file_name, extension):
 
-    fecha = datetime.datetime.now()
+        for año in file_name:
+            url_rute = ruta + '/' + año + extension + "?raw=true"
+            nombre_archivo = "data_lake/landing/" + \
+                '{}{}'.format(año, extension)
+            descarga = pd.read_excel(url_rute)
+            descarga.to_excel("data_lake/landing/{}{}".format(año,
+                                                              extension), index=None, header=True)
+        return
 
-    total_anios = fecha.year - 1995
+    ruta = "https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls/"
+    file_name1 = [str(año) for año in range(1995, 2016)]
+    file_name2 = [str(año) for año in range(2018, 2022)]
 
-    anios = list(range(1995, 1995 + total_anios, 1))
+    file_name_xlsx = file_name1 + file_name2
+    descargar_archivo(ruta, file_name_xlsx, ".xlsx")
 
-    for anio in anios:
-        f = open(f"data_lake/landing/{anio}.xlsx", "wb")
-        try:
-            f.write(
-                request.urlopen(
-                    f"https://github.com/jdvelasq/datalabs/raw/master/datasets/precio_bolsa_nacional/xls/{anio}.xlsx"
-                ).read()
-            )
-            f.close()
-        except Exception:
+    file_name_xls = ["2016", "2017"]
+    descargar_archivo(ruta, file_name_xls, ".xls")
+    #raise NotImplementedError("Implementar esta función")
+    # return
 
-            f.close()
 
-            remove(f"data_lake/landing/{anio}.xlsx")
-
-            f = open(f"data_lake/landing/{anio}.xls", "wb")
-            f.write(
-                request.urlopen(
-                    f"https://github.com/jdvelasq/datalabs/raw/master/datasets/precio_bolsa_nacional/xls/{anio}.xls"
-                ).read()
-            )
-            f.close()
-        except:
-            logging.exception("Error con el archivo: " & anio)
+# ingest_data()
 
 
 if __name__ == "__main__":
+
     import doctest
 
     doctest.testmod()
+    ingest_data()

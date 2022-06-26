@@ -14,59 +14,40 @@ def clean_data():
 
     """
     import pandas as pd
-    import os
-    import numpy as np
+    import glob
 
-    archivosRaw = [
-        "data_lake/raw/" + f for f in os.listdir("data_lake/raw") if f.endswith(".csv")
-    ]
+    path_file = glob.glob(r'data_lake/raw/*.csv')
+    li = []
 
-    contenidoCSV = []
+    for filename in path_file:
+        df = pd.read_csv(filename, index_col=None, header=0)
+        li.append(df)
+    read_file = pd.concat(li, axis=0, ignore_index=True)
+    read_file = read_file[read_file["Fecha"].notnull()]
 
-    for archivo in archivosRaw:
-        data = pd.read_csv(archivo)
-        data = data.fillna(method="bfill", axis=1)
+    fecha1 = read_file.iloc[:, 0]  # fecha
+    lista_datos = []
 
-        data = pd.melt(
-            data,
-            id_vars=["Fecha"],
-            value_vars=[
-                "H00",
-                "H01",
-                "H02",
-                "H03",
-                "H04",
-                "H05",
-                "H06",
-                "H07",
-                "H08",
-                "H09",
-                "H10",
-                "H11",
-                "H12",
-                "H13",
-                "H14",
-                "H15",
-                "H16",
-                "H17",
-                "H18",
-                "H19",
-                "H20",
-                "H21",
-                "H22",
-                "H23",
-            ],
-        )
-        data.columns = ["Fecha", "Hora", "Precio"]
-        data = data.sort_values(by=["Fecha", "Hora"])
+    precio = 0
+    contador_filas = 0
+    for fecha in fecha1:
+        for hora in range(0, 24):
+            precio = (read_file.iloc[contador_filas, (hora+1)])
+            lista_datos.append([fecha, hora, precio])
+        contador_filas += 1
+    df = pd.DataFrame(lista_datos, columns=["fecha", "hora", "precio"])
+    df = df[df["fecha"].notnull()]
+    df.to_csv("data_lake/cleansed/precios-horarios.csv",
+              index=None, header=True)
+    #raise NotImplementedError("Implementar esta función")
+    # return
 
-        contenidoCSV.append(data)
-
-    contenidoCSVMerged = pd.concat(contenidoCSV, ignore_index=True)
-    contenidoCSVMerged.to_csv("data_lake/cleansed/precios-horarios.csv", index=False)
+# clean_data()
 
 
 if __name__ == "__main__":
+
     import doctest
 
     doctest.testmod()
+    clean_data()
