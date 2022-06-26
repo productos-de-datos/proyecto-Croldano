@@ -5,12 +5,9 @@ def make_forecasts():
     archivo contiene tres columnas:
 
     * La fecha.
-
     * El precio promedio real de la electricidad.
-
     * El pronóstico del precio promedio real.
-
-
+    
     """
     raise NotImplementedError("Implementar esta función")
 
