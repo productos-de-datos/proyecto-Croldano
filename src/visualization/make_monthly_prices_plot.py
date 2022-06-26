@@ -1,43 +1,36 @@
+from matplotlib.pyplot import grid, title
+
+
 def make_monthly_prices_plot():
     """Crea un grafico de lines que representa los precios promedios diarios.
-<<<<<<< HEAD
-
-    Usando el archivo data_lake/business/precios-diarios.csv, crea un grafico de
-    lines que representa los precios promedios diarios.
-
-    El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/daily_prices.png.
-    
-=======
     Usando el archivo data_lake/business/precios-mensuales.csv, crea un grafico de
     lines que representa los precios promedios mensuales.
     El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/monthly_prices.png.
     >>> make_monthly_prices_plot()
->>>>>>> parent of b6f2afc (Try n)
     """
+
     import pandas as pd
-    import matplotlib.pyplot as plt
-    path_file = r'data_lake/business/precios-mensuales.csv'
-    datos = pd.read_csv(path_file, index_col=None, sep=',', header=0)
-    datos["fecha"] = pd.to_datetime(datos["fecha"])
-    x = datos.fecha
-    y = datos.precio
+    import os
 
-    plt.figure(figsize=(15, 6))
-    plt.plot(x, y, 'b', label='Promedio Mensual')
-    plt.title('Promedio Mensual')
-    plt.xlabel('Fecha')
-    plt.ylabel('Precio')
-    plt.legend()
-    plt.xticks(rotation="vertical")
-    plt.savefig("data_lake/business/reports/figures/monthly_prices.png")
+    # Importar el archivo de precios mensuales
+    os.chdir("./")
 
-    # return
-    #raise NotImplementedError("Implementar esta función")
+    prices_df = pd.read_csv("data_lake/business/precios-mensuales.csv")
+
+    # Crea y Guarda el grafico en formato PNG
+    figura = prices_df.plot(
+        kind="line",
+        x="Fecha",
+        y="Precio",
+        title="Precio Promedio Histórico Mensual",
+        grid=True,
+        figsize=(10, 5),
+    ).get_figure()
+
+    figura.savefig("data_lake/business/reports/figures/monthly_prices.png")
 
 
 if __name__ == "__main__":
-
     import doctest
 
     doctest.testmod()
-    make_monthly_prices_plot()
