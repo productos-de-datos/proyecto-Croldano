@@ -1,11 +1,18 @@
 def make_monthly_prices_plot():
     """Crea un grafico de lines que representa los precios promedios diarios.
+<<<<<<< HEAD
 
     Usando el archivo data_lake/business/precios-diarios.csv, crea un grafico de
     lines que representa los precios promedios diarios.
 
     El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/daily_prices.png.
     
+=======
+    Usando el archivo data_lake/business/precios-mensuales.csv, crea un grafico de
+    lines que representa los precios promedios mensuales.
+    El archivo se debe salvar en formato PNG en data_lake/business/reports/figures/monthly_prices.png.
+    >>> make_monthly_prices_plot()
+>>>>>>> parent of b6f2afc (Try n)
     """
     import pandas as pd
     import matplotlib.pyplot as plt
