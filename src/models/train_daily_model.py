@@ -48,4 +48,5 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-train_daily_model()
+    train_daily_model()
+    

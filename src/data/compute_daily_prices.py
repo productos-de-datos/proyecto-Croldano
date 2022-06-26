@@ -13,6 +13,7 @@ def compute_daily_prices():
 
     """
     import pandas as pd
+    import os
 
 
     data = pd.read_csv("data_lake/cleansed/precios-horarios.csv")
@@ -28,3 +29,5 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
+
+    

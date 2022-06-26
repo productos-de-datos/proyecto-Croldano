@@ -10,7 +10,7 @@ def make_features():
 
     En la carpeta notebooks/ cree los notebooks de jupyter necesarios para
     analizar y determinar las variables explicativas del modelo.
-    
+
     """
     import shutil
 
@@ -25,3 +25,4 @@ if __name__ == "__main__":
 
     doctest.testmod()
     make_features()
+    
